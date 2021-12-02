@@ -87,13 +87,27 @@
         .catch(function(error){
           $("#display").removeClass();
           $("#display").addClass("bg-warning");
-          $("#display").html("delate fail");
+          $("#display").html("delate fail:"+ JSON.stringify(error));
         })
-      $("#display").html("delete does not work");
     }
 
     function updateData() {
-      $("#display").html("update does not work");
+      UTdata.fetch()
+        .then(function(results){
+          let value = parseInt($("#update").val());
+          results.set(key,value);
+          return results.delete();
+        })
+        .then(function(results){
+          $("#display").removeClass();
+          $("#display").addClass("bg-success");
+          $("#display").html("update success");
+        })
+        .catch(function(error){
+          $("#display").removeClass();
+          $("#display").addClass("bg-warning");
+          $("#display").html("update fail:"+ JSON.stringify(error));
+        })
     }
   </script>
 </head>
@@ -112,7 +126,7 @@
   </div>
   <div>
     <input type="text" id="update" placeholder="更新">
-    <a onclick="updateData()" class="btn btn-outline-primary" role="button">Update</a>
+    <a onclick="updateData()" class="btn btn-outline-secondary" role="button">Update</a>
   </div>
   <div id="display" class="text-light bg-info">
     Results
